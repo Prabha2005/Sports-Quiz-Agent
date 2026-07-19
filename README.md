@@ -4,6 +4,14 @@ An AI-powered Sports Quiz Generator that creates dynamic multiple-choice quizzes
 
 ---
 
+## 🚀 Live Demo
+
+**🌐 Live App:** https://sports-quiz-agent-xdk87zptk4yshbtdsnmqea.streamlit.app/
+
+**💻 GitHub Repository:** https://github.com/Prabha2005/Sports-Quiz-Agent
+
+---
+
 ## 📌 Overview
 
 This project demonstrates how Retrieval-Augmented Generation (RAG) can be used to build intelligent applications.
