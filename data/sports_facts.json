@@ -1,0 +1,184 @@
+[
+  {
+    "id": 1,
+    "sport": "Cricket",
+    "category": "Records",
+    "fact": "Virat Kohli became the fastest player to score 14,000 runs in One Day Internationals in 2025."
+  },
+  {
+    "id": 2,
+    "sport": "Cricket",
+    "category": "Tournament",
+    "fact": "The ICC Champions Trophy returned in 2025 after an eight-year gap."
+  },
+  {
+    "id": 3,
+    "sport": "Cricket",
+    "category": "Rules",
+    "fact": "A Super Over is used to determine the winner if a limited-overs knockout match ends in a tie."
+  },
+  {
+    "id": 4,
+    "sport": "Cricket",
+    "category": "Equipment",
+    "fact": "A cricket ball weighs between 155.9 and 163 grams according to ICC regulations."
+  },
+  {
+    "id": 5,
+    "sport": "Cricket",
+    "category": "History",
+    "fact": "The Marylebone Cricket Club (MCC) remains the guardian of the Laws of Cricket."
+  },
+  {
+    "id": 6,
+    "sport": "Cricket",
+    "category": "Players",
+    "fact": "Jasprit Bumrah became the first Indian fast bowler to reach the number one position in all three international formats."
+  },
+  {
+    "id": 7,
+    "sport": "Cricket",
+    "category": "Records",
+    "fact": "Brian Lara holds the highest individual score in first-class cricket with 501 not out."
+  },
+  {
+    "id": 8,
+    "sport": "Cricket",
+    "category": "Tournament",
+    "fact": "The Women's Premier League (WPL) was launched in India in 2023."
+  },
+  {
+    "id": 9,
+    "sport": "Cricket",
+    "category": "Rules",
+    "fact": "A batsman is awarded six runs when the ball crosses the boundary without touching the ground."
+  },
+  {
+    "id": 10,
+    "sport": "Cricket",
+    "category": "History",
+    "fact": "Day-night Test matches are played using a pink cricket ball."
+  },
+
+  {
+    "id": 11,
+    "sport": "Football",
+    "category": "Records",
+    "fact": "Lionel Messi won a record eighth Ballon d'Or award in 2023."
+  },
+  {
+    "id": 12,
+    "sport": "Football",
+    "category": "Players",
+    "fact": "Kylian Mbappé scored a hat-trick in the 2022 FIFA World Cup final."
+  },
+  {
+    "id": 13,
+    "sport": "Football",
+    "category": "Rules",
+    "fact": "A football team consists of eleven players including one goalkeeper."
+  },
+  {
+    "id": 14,
+    "sport": "Football",
+    "category": "Equipment",
+    "fact": "The circumference of a standard football is between 68 and 70 centimeters."
+  },
+  {
+    "id": 15,
+    "sport": "Football",
+    "category": "Tournament",
+    "fact": "The UEFA European Championship is held every four years."
+  },
+  {
+    "id": 16,
+    "sport": "Football",
+    "category": "History",
+    "fact": "The International Football Association Board (IFAB) writes and maintains the Laws of the Game."
+  },
+  {
+    "id": 17,
+    "sport": "Football",
+    "category": "Records",
+    "fact": "Cristiano Ronaldo is the highest goal scorer in men's international football."
+  },
+  {
+    "id": 18,
+    "sport": "Football",
+    "category": "Tournament",
+    "fact": "Spain won UEFA Euro 2024 by defeating England in the final."
+  },
+  {
+    "id": 19,
+    "sport": "Football",
+    "category": "Rules",
+    "fact": "The Video Assistant Referee (VAR) system helps officials review key match decisions."
+  },
+  {
+    "id": 20,
+    "sport": "Football",
+    "category": "History",
+    "fact": "The first official FIFA Women's World Cup was held in China in 1991."
+  },
+
+  {
+    "id": 21,
+    "sport": "Badminton",
+    "category": "Players",
+    "fact": "An Se-young of South Korea won the women's singles gold medal at the Paris 2024 Olympics."
+  },
+  {
+    "id": 22,
+    "sport": "Badminton",
+    "category": "Players",
+    "fact": "Viktor Axelsen of Denmark won the men's singles gold medal at the Paris 2024 Olympics."
+  },
+  {
+    "id": 23,
+    "sport": "Badminton",
+    "category": "Rules",
+    "fact": "A shuttlecock has 16 feathers arranged in a circular pattern."
+  },
+  {
+    "id": 24,
+    "sport": "Badminton",
+    "category": "Equipment",
+    "fact": "A badminton racket typically weighs between 70 and 95 grams."
+  },
+  {
+    "id": 25,
+    "sport": "Badminton",
+    "category": "Tournament",
+    "fact": "The BWF World Championships are held annually except during Olympic years."
+  },
+  {
+    "id": 26,
+    "sport": "Badminton",
+    "category": "History",
+    "fact": "Badminton became an official Olympic sport at the 1992 Barcelona Games."
+  },
+  {
+    "id": 27,
+    "sport": "Badminton",
+    "category": "Players",
+    "fact": "Lakshya Sen won a bronze medal at the 2021 BWF World Championships."
+  },
+  {
+    "id": 28,
+    "sport": "Badminton",
+    "category": "Tournament",
+    "fact": "The Sudirman Cup is the world mixed team badminton championship."
+  },
+  {
+    "id": 29,
+    "sport": "Badminton",
+    "category": "Rules",
+    "fact": "Players change ends after every game and during the third game when a player reaches 11 points."
+  },
+  {
+    "id": 30,
+    "sport": "Badminton",
+    "category": "History",
+    "fact": "China has won more Sudirman Cup titles than any other nation."
+  }
+]
