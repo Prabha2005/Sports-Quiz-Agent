@@ -215,5 +215,3 @@ This project demonstrates:
 - Semantic Search
 - AI-powered Application Development
 - Streamlit Frontend Development
-
----
