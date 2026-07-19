@@ -169,25 +169,25 @@ http://localhost:8501
 
 ### Home Page
 
-![Home](screenshots/home.png)
+<img width="1917" height="917" alt="home" src="https://github.com/user-attachments/assets/3be0f754-4614-47e1-8502-2bf3e9459dd2" />
 
 ---
 
 ### Generated Quiz
 
-![Quiz](screenshots/quiz.png)
+<img width="1917" height="907" alt="quiz" src="https://github.com/user-attachments/assets/ae4e6f1e-4e13-4609-b300-7df54b252750" />
 
 ---
 
 ### Historical Facts
 
-![Historical Facts](screenshots/historical-facts.png)
+<img width="1917" height="907" alt="historical-facts" src="https://github.com/user-attachments/assets/e576bf39-8115-4970-8bca-b964b19447ec" />
 
 ---
 
 ### Latest Sports News
 
-![Latest News](screenshots/latest-news.png)
+<img width="1917" height="912" alt="latest-news" src="https://github.com/user-attachments/assets/1c172850-9fd2-4139-a72f-e9f08808a2c1" />
 
 ---
 
