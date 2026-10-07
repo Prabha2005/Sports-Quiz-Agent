@@ -105,9 +105,9 @@ def generate_quiz(sport, difficulty="Medium"):
     )
 
     response = client.models.generate_content(
-    model="gemini-flash-latest",
-    contents=prompt
-)
+        model="gemini-flash-latest",
+        contents=prompt
+    )
     try:
         quiz = json.loads(response.text)
     

@@ -7,6 +7,13 @@ venv/
 # Python cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Databases
+sports_quiz.db
+*.sqlite3-journal
 
 # Streamlit cache
 .streamlit/
@@ -14,3 +21,10 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Development & Planning Artifacts
+implement-plan.md
+project-overall-now.md
+phase_*_implemented.md
+list_models.py
+test_phase_*.py

@@ -159,16 +159,33 @@ GEMINI_API_KEY=YOUR_API_KEY
 
 ---
 
-## ▶️ Run the Application
+## ▶️ Running the Application
+
+### 1. Run the Multi-Agent Platform (FastAPI + LangGraph + Decoupled UI)
+
+To launch both the FastAPI backend (port `8000`) and the decoupled Streamlit frontend (port `8501`) together:
+
+```bash
+python run_app.py
+```
+
+Or run them individually in separate terminals:
+
+```bash
+# Terminal 1: FastAPI Backend
+uvicorn app.main:app --reload --port 8000
+
+# Terminal 2: Streamlit Frontend
+streamlit run frontend/streamlit_app.py
+```
+
+- **Interactive UI:** `http://localhost:8501`
+- **Interactive OpenAPI / Swagger Docs:** `http://localhost:8000/docs`
+
+### 2. Run the Legacy Synchronous Prototype (Baseline)
 
 ```bash
 streamlit run app.py
-```
-
-The application will open in your browser at:
-
-```
-http://localhost:8501
 ```
 
 ---
