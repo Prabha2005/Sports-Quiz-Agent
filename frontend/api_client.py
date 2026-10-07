@@ -7,7 +7,7 @@ class APIClient:
     """HTTP Client communicating exclusively with the FastAPI REST backend."""
 
     def __init__(self, base_url: Optional[str] = None, timeout: float = 90.0):
-        self.base_url = base_url or os.getenv("API_BASE_URL", "http://127.0.0.1:8000")
+        self.base_url = base_url or os.getenv("API_BASE_URL", "https://sports-quiz-agent-7zf9.onrender.com/")
         self.timeout = timeout
 
     def check_health(self) -> Dict[str, Any]:

@@ -5,7 +5,7 @@ import time
 
 
 def run_api():
-    print("[RUNNER] Starting FastAPI backend on http://127.0.0.1:8000...")
+    print("[RUNNER] Starting FastAPI backend on http://127.0.0.1:8000 or https://sports-quiz-agent-7zf9.onrender.com/...")
     subprocess.run([sys.executable, "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000", "--reload"])
 
 
