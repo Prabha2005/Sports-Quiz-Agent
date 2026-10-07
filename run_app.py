@@ -5,21 +5,21 @@ import time
 
 
 def run_api():
-    print("🚀 Starting FastAPI backend on http://127.0.0.1:8000...")
+    print("[RUNNER] Starting FastAPI backend on http://127.0.0.1:8000...")
     subprocess.run([sys.executable, "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000", "--reload"])
 
 
 def run_ui():
-    print("🎨 Starting Streamlit frontend on http://localhost:8501...")
-    subprocess.run([sys.executable, "-m", "streamlit", "run", "frontend/streamlit_app.py"])
+    print("[RUNNER] Starting Streamlit frontend on http://localhost:8501...")
+    subprocess.run([sys.executable, "-m", "streamlit", "run", "frontend/streamlit_app.py", "--server.port=8501", "--server.headless=true"])
 
 
 def run_both():
-    print("🚀 Starting FastAPI backend and Streamlit frontend together...")
+    print("[RUNNER] Starting FastAPI backend and Streamlit frontend together...")
     api_proc = subprocess.Popen([sys.executable, "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000"])
     time.sleep(2)
     try:
-        subprocess.run([sys.executable, "-m", "streamlit", "run", "frontend/streamlit_app.py"])
+        subprocess.run([sys.executable, "-m", "streamlit", "run", "frontend/streamlit_app.py", "--server.port=8501", "--server.headless=true"])
     finally:
         api_proc.terminate()
 
