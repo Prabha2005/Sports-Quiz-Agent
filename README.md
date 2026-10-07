@@ -1,175 +1,183 @@
-## 🏆 AI-Powered Sports Quiz Generator
+# 🏆 Agentic AI Sports Research & Quiz Platform
 
-An AI-powered Sports Quiz Generator that creates dynamic multiple-choice quizzes by combining historical sports facts stored in ChromaDB with the latest sports news retrieved from DuckDuckGo. The application uses Retrieval-Augmented Generation (RAG) and Google's Gemini AI to generate engaging, context-aware quizzes through an interactive Streamlit interface.
-
----
-
-## 🚀 Live Demo
-
-**🌐 Live App:** https://sports-quiz-agent-xdk87zptk4yshbtdsnmqea.streamlit.app/
-
-**💻 GitHub Repository:** https://github.com/Prabha2005/Sports-Quiz-Agent
+An AI-powered Sports Research and Quiz Platform featuring a **stateful multi-agent orchestration engine (LangGraph)**, **asynchronous REST API (FastAPI)**, **strict data contracts (Pydantic v2)**, **relational database persistence (SQLAlchemy 2.0 + SQLite)**, and **dynamic knowledge retrieval (ChromaDB Vector RAG + DuckDuckGo Live Search)** with a decoupled **Streamlit** user interface.
 
 ---
 
-## 📌 Overview
+## 🚀 Live Demo & Links
 
-This project demonstrates how Retrieval-Augmented Generation (RAG) can be used to build intelligent applications.
-
-Instead of relying only on an LLM, the application retrieves:
-
-- Historical sports facts from ChromaDB
-- Latest sports news from DuckDuckGo
-
-These are combined into a prompt and sent to Gemini AI, which generates personalized sports quizzes.
+- **🌐 Live App:** https://sports-quiz-agent-xdk87zptk4yshbtdsnmqea.streamlit.app/
+- **💻 GitHub Repository:** https://github.com/Prabha2005/Sports-Quiz-Agent
 
 ---
 
-## ✨ Features
+## 📌 Architecture & System Flow
 
-- ✅ AI-generated sports quizzes
-- ✅ Retrieval-Augmented Generation (RAG)
-- ✅ ChromaDB vector database
-- ✅ DuckDuckGo live sports news search
-- ✅ Google Gemini AI integration
-- ✅ Interactive multiple-choice quiz interface
-- ✅ Historical + live sports context
-- ✅ Difficulty selection (Easy / Medium / Hard)
-- ✅ Multiple sports support
-- ✅ Streamlit web application
+The platform separates user interface presentation, HTTP routing, agentic reasoning, and database persistence into decoupled layers:
 
----
-
-## 🏗️ Architecture
-
-```
-
-                User
-                  │
-                  ▼
-          Streamlit UI (app.py)
-                  │
-                  ▼
-        generate_quiz() (generator.py)
-           ┌──────────────┴──────────────┐
-           ▼                             ▼
-    ChromaDB                     DuckDuckGo
-(Historical Facts)              (Latest News)
-           └──────────────┬──────────────┘
-                          ▼
-                     Gemini AI
-                          ▼
-                 Generated Quiz
-                          ▼
-                  Streamlit UI
-
+```text
+Streamlit Frontend (port 8501)
+    │
+    │  HTTP / REST (httpx)
+    ▼
+FastAPI Backend (port 8000)
+    │
+    │  Dependency Injection (Async Router -> QuizService -> LangGraph)
+    ▼
+LangGraph Multi-Agent Engine
+    │
+    ├──> 1. research_node (ChromaDB Vector Retrieval + DuckDuckGo Live News)
+    │
+    ├──> 2. generate_node (LangChain + Gemini with typed QuizOutput schema)
+    │
+    └──> 3. validate_node (Fact-checking & quality score in [0.0, 1.0])
+          │
+          ├── [is_valid == True] ─────────► save_node (Mark validated)
+          │                                      │
+          ├── [is_valid == False & retry < 3] ──► generate_node (Critique injection)
+          │
+          └── [is_valid == False & retry >= 3] ─► error_node (HTTP 422, zero DB writes)
+                                                 │
+                                                 ▼
+                                     SQLAlchemy 2.0 ORM Layer
+                                                 │
+                                                 ▼
+                                     SQLite Database (sports_quiz.db)
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Key Features
 
-| Technology | Purpose |
-|------------|----------|
-| Python | Backend |
-| Streamlit | Web Interface |
-| Gemini AI | Quiz Generation |
-| ChromaDB | Vector Database |
-| DuckDuckGo (DDGS) | Live News Search |
-| Sentence Transformers | Embeddings |
-| python-dotenv | Environment Variables |
+- 🧠 **Multi-Agent Cyclic Orchestration (LangGraph):** Self-correcting generation loop with automated validation, critique feedback injection, and bounded retries.
+- ⚡ **Asynchronous REST API (FastAPI):** High-performance endpoints (`/api/v1/quizzes/generate`, `/api/v1/quizzes/{id}`, `/api/v1/attempts/submit`, `/health`) with dependency injection and interactive OpenAPI documentation.
+- 🔒 **Strict Data Contracts (Pydantic v2):** Enforces rigid schemas (exactly 4 questions, options `A/B/C/D`, validated answer keys, bounded scores).
+- 📚 **Hybrid Retrieval (RAG + Live Search):** Combines static historical domain facts from ChromaDB with real-time web search from DuckDuckGo.
+- 💾 **Relational Persistence (SQLAlchemy 2.0 + SQLite):** Stores quizzes, questions, and scored user attempts with foreign-key relationships and cascade deletion.
+- 🎨 **Decoupled Streamlit Frontend:** Clean UI communicating exclusively over HTTP via a dedicated `APIClient`.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Language & OOP** | Python 3.11 | Core object-oriented service layer |
+| **Agentic Workflow** | LangGraph | Stateful cyclic graph & self-correction retry loops |
+| **LLM & Prompts** | LangChain & Google Gemini API | Prompt templates & structured output bindings |
+| **REST API** | FastAPI & Uvicorn | Async HTTP backend, routing, OpenAPI docs |
+| **Data Validation** | Pydantic v2 | Strict DTO schemas and LLM output parsing |
+| **Vector Database** | ChromaDB & Sentence Transformers | RAG historical sports knowledge retrieval |
+| **Live Web Search** | DuckDuckGo (`ddgs`) | Real-time sports news and tournament updates |
+| **Database & ORM** | SQLAlchemy 2.0 & SQLite | Relational models (`Quiz`, `Question`, `QuizAttempt`) |
+| **Frontend UI** | Streamlit & `httpx` | Decoupled user interface & HTTP API client |
 
 ---
 
 ## 📂 Project Structure
 
-```
-
+```text
 sports-quiz-agent/
 │
-├── app.py
-├── README.md
-├── requirements.txt
-├── .env
+├── app/                               # Production Application Package
+│   ├── main.py                        # FastAPI entrypoint, CORS, OpenAPI router
+│   ├── api/                           # REST API Endpoints & Dependency Injection
+│   │   ├── deps.py                    # Database & Service dependencies
+│   │   └── v1/
+│   │       ├── quizzes.py             # Quiz generation & retrieval endpoints
+│   │       └── attempts.py            # Quiz attempt submission & scoring
+│   ├── database/                      # SQLAlchemy Database Session & Base
+│   │   ├── base.py                    # DeclarativeBase model registry
+│   │   └── session.py                 # SQLite engine & session factory
+│   ├── models/                        # SQLAlchemy ORM Models
+│   │   ├── quiz.py                    # Quiz & Question models
+│   │   └── attempt.py                 # QuizAttempt model
+│   ├── schemas/                       # Pydantic v2 Schemas & Contracts
+│   │   ├── quiz.py                    # QuizOutput, QuestionItem, ValidationResult
+│   │   └── attempt.py                 # SubmitAttemptRequest, AttemptResultResponse
+│   ├── prompts/                       # LangChain ChatPromptTemplates
+│   │   ├── quiz_prompt.py             # Generation prompt template
+│   │   └── validation_prompt.py       # Fact-checking & validation prompt
+│   ├── services/                      # Modular OOP Service Layer
+│   │   ├── rag_service.py             # ChromaDB vector retrieval service
+│   │   ├── search_service.py          # DuckDuckGo search service
+│   │   ├── llm_service.py             # Gemini client with fallback & structured output
+│   │   └── quiz_service.py            # Database CRUD & attempt scoring service
+│   └── graph/                         # LangGraph Multi-Agent Engine
+│       ├── state.py                   # AgentState definition
+│       ├── nodes.py                   # research, generate, validate, save, error nodes
+│       └── workflow.py                # Stateful cyclic graph compiler
 │
-├── data/
-│   └── sports_facts.json
+├── frontend/                          # Decoupled Streamlit Frontend Package
+│   ├── streamlit_app.py               # Main UI with session state management
+│   ├── api_client.py                  # HTTP client (httpx) calling FastAPI
+│   └── components/                    # Modular UI components
+│       ├── quiz_view.py               # 4-question interactive form
+│       └── result_view.py             # Scorecard, breakdown & explanations
 │
-├── chroma_db/
-│
-├── src/
+├── src/                               # Baseline Procedural Prototype (Preserved)
 │   ├── config.py
 │   ├── database.py
 │   ├── generator.py
 │   └── search.py
 │
-├── test_database.py
-├── test_generator.py
-└── test_search.py
-
+├── app.py                             # Legacy Synchronous Streamlit Entrypoint
+├── run_app.py                         # Unified Application Runner
+├── requirements.txt                   # Project Dependencies
+├── .env.example                       # Environment template
+└── README.md
 ```
 
 ---
 
-## 🚀 Installation
+## 🚀 Installation & Setup
 
-### Clone the repository
-
-```bash
-git clone https://github.com/<your-username>/sports-quiz-agent.git
-```
+### 1. Clone the repository
 
 ```bash
+git clone https://github.com/Prabha2005/Sports-Quiz-Agent.git
 cd sports-quiz-agent
 ```
 
-### Create a virtual environment
+### 2. Create and activate a virtual environment
 
 ```bash
+# Windows
 python -m venv venv
-```
-
-### Windows
-
-```bash
 venv\Scripts\activate
-```
 
-### Linux / macOS
-
-```bash
+# Linux / macOS
+python -m venv venv
 source venv/bin/activate
 ```
 
-### Install dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
+### 4. Configure Environment Variables
 
-## 🔑 Environment Variables
-
-Create a `.env` file in the project root.
+Create a `.env` file in the root directory:
 
 ```env
-GEMINI_API_KEY=YOUR_API_KEY
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
 ```
 
 ---
 
 ## ▶️ Running the Application
 
-### 1. Run the Multi-Agent Platform (FastAPI + LangGraph + Decoupled UI)
+### Option A: Run the Multi-Agent Platform (FastAPI + Decoupled UI)
 
-To launch both the FastAPI backend (port `8000`) and the decoupled Streamlit frontend (port `8501`) together:
+To launch both the FastAPI backend (`port 8000`) and the Streamlit frontend (`port 8501`) together:
 
 ```bash
 python run_app.py
 ```
 
-Or run them individually in separate terminals:
+Or run them in separate terminals:
 
 ```bash
 # Terminal 1: FastAPI Backend
@@ -179,10 +187,10 @@ uvicorn app.main:app --reload --port 8000
 streamlit run frontend/streamlit_app.py
 ```
 
-- **Interactive UI:** `http://localhost:8501`
-- **Interactive OpenAPI / Swagger Docs:** `http://localhost:8000/docs`
+- **Interactive UI:** [http://localhost:8501](http://localhost:8501)
+- **Interactive OpenAPI / Swagger Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
 
-### 2. Run the Legacy Synchronous Prototype (Baseline)
+### Option B: Run the Legacy Synchronous Prototype (Baseline)
 
 ```bash
 streamlit run app.py
@@ -193,50 +201,29 @@ streamlit run app.py
 ## 🖼️ Screenshots
 
 ### Home Page
-
 <img width="1917" height="917" alt="home" src="https://github.com/user-attachments/assets/3be0f754-4614-47e1-8502-2bf3e9459dd2" />
 
 ---
 
 ### Generated Quiz
-
 <img width="1917" height="907" alt="quiz" src="https://github.com/user-attachments/assets/ae4e6f1e-4e13-4609-b300-7df54b252750" />
 
 ---
 
 ### Historical Facts
-
 <img width="1917" height="907" alt="historical-facts" src="https://github.com/user-attachments/assets/e576bf39-8115-4970-8bca-b964b19447ec" />
 
 ---
 
 ### Latest Sports News
-
 <img width="1917" height="912" alt="latest-news" src="https://github.com/user-attachments/assets/1c172850-9fd2-4139-a72f-e9f08808a2c1" />
 
 ---
 
-### 📈 Future Improvements
+## 🎯 Key Technical Capabilities Demonstrated
 
-- Authentication
-- Leaderboard
-- Score history
-- Timer-based quizzes
-- Voice-enabled quiz
-- More sports datasets
-- Personalized recommendations
-- AI explanations with references
-
----
-
-## 🎯 Learning Outcomes
-
-This project demonstrates:
-
-- Retrieval-Augmented Generation (RAG)
-- Vector Databases
-- Prompt Engineering
-- Large Language Model Integration
-- Semantic Search
-- AI-powered Application Development
-- Streamlit Frontend Development
+- **Agentic AI & Self-Correction:** Cyclic graph with critique injection and validation loops.
+- **Strict Structured Outputs:** Native Pydantic schema parsing via `with_structured_output()`.
+- **Decoupled Microservice Architecture:** HTTP REST API boundary separating UI from LLM orchestration.
+- **Relational Data Modeling:** SQLAlchemy 2.0 ORM, foreign keys, cascade deletes, atomic commits.
+- **Hybrid Context Gathering:** ChromaDB vector embeddings + DuckDuckGo live news search.
