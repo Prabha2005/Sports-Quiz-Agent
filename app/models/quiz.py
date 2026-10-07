@@ -23,6 +23,7 @@ class Quiz(Base):
     topic: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     difficulty: Mapped[str] = mapped_column(String(50), nullable=False)
     validation_score: Mapped[float] = mapped_column(Float, default=1.0)
+    research_context: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow,

@@ -23,8 +23,17 @@ def init_db():
     # Import models to ensure they are registered with Base.metadata
     from app.models.quiz import Quiz, Question  # noqa: F401
     from app.models.attempt import QuizAttempt  # noqa: F401
+    from sqlalchemy import text
 
     Base.metadata.create_all(bind=engine)
+
+    # Lightweight column addition for existing SQLite databases
+    with engine.connect() as conn:
+        try:
+            conn.execute(text("ALTER TABLE quizzes ADD COLUMN research_context JSON"))
+            conn.commit()
+        except Exception:
+            pass
 
 
 def get_db() -> Generator[Session, None, None]:

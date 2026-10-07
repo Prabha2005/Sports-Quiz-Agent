@@ -1,9 +1,14 @@
-from typing import Dict, Any, Callable
+from typing import Dict, Any, Callable, Optional
 import streamlit as st
+from frontend.components.context_view import render_research_context
 
 
-def render_result_view(result_data: Dict[str, Any], on_reset: Callable[[], None]):
-    """Renders the evaluated quiz attempt scorecard and itemized breakdown."""
+def render_result_view(
+    result_data: Dict[str, Any],
+    on_reset: Callable[[], None],
+    research_context: Optional[Dict[str, Any]] = None
+):
+    """Renders the evaluated quiz attempt scorecard, itemized breakdown, and source context."""
     score = result_data.get("score", 0)
     total = result_data.get("total_questions", 4)
     percentage = result_data.get("percentage", 0.0)
@@ -45,6 +50,11 @@ def render_result_view(result_data: Dict[str, Any], on_reset: Callable[[], None]
         with st.expander("💡 AI Fact Explanation"):
             st.write(explanation)
 
+        st.divider()
+
+    # Render RAG & Search context
+    if research_context:
+        render_research_context(research_context)
         st.divider()
 
     if st.button("🔄 Generate Another Quiz", use_container_width=True, type="secondary"):

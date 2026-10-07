@@ -1,3 +1,10 @@
+import sys
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 import streamlit as st
 from frontend.api_client import APIClient
 from frontend.components.quiz_view import render_quiz_view
@@ -24,6 +31,9 @@ if "current_quiz" not in st.session_state:
 if "current_result" not in st.session_state:
     st.session_state.current_result = None
 
+if "current_research_context" not in st.session_state:
+    st.session_state.current_research_context = None
+
 if "error_message" not in st.session_state:
     st.session_state.error_message = None
 
@@ -32,17 +42,22 @@ def reset_quiz_state():
     """Resets all frontend state for a fresh quiz generation."""
     st.session_state.current_quiz = None
     st.session_state.current_result = None
+    st.session_state.current_research_context = None
     st.session_state.error_message = None
     st.session_state.selected_answers = {}
 
 
 def handle_submit_attempt(answers: dict):
     """Submits user answers to the FastAPI backend."""
+    if not st.session_state.current_quiz:
+        return
     quiz_id = st.session_state.current_quiz.get("quiz_id")
+    research_ctx = st.session_state.current_quiz.get("research_context")
     with st.spinner("📊 Evaluating answers and recording score in SQLite..."):
         res = api_client.submit_attempt(quiz_id=quiz_id, answers=answers)
         if res.get("success"):
             st.session_state.current_result = res["data"]
+            st.session_state.current_research_context = research_ctx
             st.session_state.current_quiz = None
             st.rerun()
         else:
@@ -146,7 +161,8 @@ if st.session_state.current_quiz:
 elif st.session_state.current_result:
     render_result_view(
         result_data=st.session_state.current_result,
-        on_reset=reset_quiz_state
+        on_reset=reset_quiz_state,
+        research_context=st.session_state.current_research_context
     )
 
 # 3. Idle Welcome View

@@ -1,5 +1,6 @@
 from typing import Dict, Any, Callable
 import streamlit as st
+from frontend.components.context_view import render_research_context
 
 
 def render_quiz_view(quiz_data: Dict[str, Any], on_submit: Callable[[Dict[str, str]], None]):
@@ -10,6 +11,7 @@ def render_quiz_view(quiz_data: Dict[str, Any], on_submit: Callable[[Dict[str, s
     quiz_id = quiz_data.get("quiz_id", "")
     val_score = quiz_data.get("validation_score", 1.0)
     questions = quiz_data.get("questions", [])
+    research_context = quiz_data.get("research_context")
 
     st.subheader(f"🏅 {sport} Quiz ({difficulty})")
     if topic:
@@ -50,3 +52,8 @@ def render_quiz_view(quiz_data: Dict[str, Any], on_submit: Callable[[Dict[str, s
     with col_btn:
         if st.button("🚀 Submit Quiz Attempt", use_container_width=True, type="primary"):
             on_submit(st.session_state.selected_answers)
+
+    # Render RAG & Search context
+    if research_context:
+        st.divider()
+        render_research_context(research_context)

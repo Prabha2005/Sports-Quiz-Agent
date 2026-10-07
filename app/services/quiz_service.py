@@ -18,9 +18,10 @@ class QuizService:
         difficulty: str,
         topic: Optional[str],
         questions_data: List[Dict[str, Any]],
-        validation_score: float = 1.0
+        validation_score: float = 1.0,
+        research_context: Optional[Dict[str, Any]] = None
     ) -> Quiz:
-        """Creates and commits a new Quiz with its child Question records."""
+        """Creates and commits a new Quiz with its child Question records and research context."""
         quiz_id = str(uuid.uuid4())[:8]
 
         quiz = Quiz(
@@ -28,7 +29,8 @@ class QuizService:
             sport=sport,
             difficulty=difficulty,
             topic=topic,
-            validation_score=validation_score
+            validation_score=validation_score,
+            research_context=research_context
         )
 
         for q in questions_data:

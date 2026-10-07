@@ -3,6 +3,8 @@ from app.schemas.quiz import (
     QuizGenerateRequest,
     QuizGenerateResponse,
     QuestionItem,
+    ResearchContext,
+    NewsItem,
 )
 from app.graph.state import AgentState
 from app.api.deps import get_quiz_service, get_quiz_graph
@@ -32,6 +34,8 @@ def generate_quiz_endpoint(
         "topic": request.topic,
         "difficulty": request.difficulty,
         "context": [],
+        "historical_facts": [],
+        "latest_news": [],
         "questions": [],
         "validation": None,
         "retry_count": 0,
@@ -62,13 +66,30 @@ def generate_quiz_endpoint(
     # Convert to typed QuestionItem models
     typed_questions = [QuestionItem.model_validate(q) for q in questions_data]
 
+    # Build safe research context
+    raw_hist = final_state.get("historical_facts") or []
+    raw_news = final_state.get("latest_news") or []
+    typed_news = [
+        NewsItem(
+            title=item.get("title", ""),
+            body=item.get("body", ""),
+            href=item.get("href")
+        )
+        for item in raw_news
+    ]
+    research_ctx = ResearchContext(
+        historical_facts=raw_hist,
+        latest_news=typed_news
+    )
+
     # Persist in SQLite via SQLAlchemy QuizService
     quiz_record = quiz_service.create_quiz(
         sport=request.sport,
         difficulty=request.difficulty,
         topic=request.topic,
         questions_data=[q.model_dump() for q in typed_questions],
-        validation_score=validation_score
+        validation_score=validation_score,
+        research_context=research_ctx.model_dump()
     )
 
     return QuizGenerateResponse(
@@ -77,7 +98,8 @@ def generate_quiz_endpoint(
         difficulty=quiz_record.difficulty,
         topic=quiz_record.topic,
         questions=typed_questions,
-        validation_score=quiz_record.validation_score
+        validation_score=quiz_record.validation_score,
+        research_context=research_ctx
     )
 
 
@@ -109,11 +131,19 @@ def get_quiz_endpoint(
         for q in quiz_record.questions
     ]
 
+    research_ctx = None
+    if quiz_record.research_context:
+        try:
+            research_ctx = ResearchContext.model_validate(quiz_record.research_context)
+        except Exception:
+            research_ctx = None
+
     return QuizGenerateResponse(
         quiz_id=quiz_record.id,
         sport=quiz_record.sport,
         difficulty=quiz_record.difficulty,
         topic=quiz_record.topic,
         questions=typed_questions,
-        validation_score=quiz_record.validation_score
+        validation_score=quiz_record.validation_score,
+        research_context=research_ctx
     )

@@ -8,6 +8,8 @@ class AgentState(TypedDict):
     topic: Optional[str]
     difficulty: str
     context: List[str]
+    historical_facts: Optional[List[str]]
+    latest_news: Optional[List[Dict[str, Any]]]
     questions: List[Dict[str, Any]]
     validation: Optional[Dict[str, Any]]
     retry_count: int

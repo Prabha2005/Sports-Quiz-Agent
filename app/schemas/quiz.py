@@ -68,6 +68,25 @@ class ValidationResult(BaseModel):
     )
 
 
+class NewsItem(BaseModel):
+    """Represents a recent news item retrieved from web search."""
+    title: str = Field(default="", description="News article title.")
+    body: str = Field(default="", description="News article summary.")
+    href: Optional[str] = Field(default=None, description="URL source link if available.")
+
+
+class ResearchContext(BaseModel):
+    """Encapsulates safe, user-facing retrieved historical facts and web news."""
+    historical_facts: List[str] = Field(
+        default_factory=list,
+        description="Historical facts retrieved from ChromaDB vector store."
+    )
+    latest_news: List[NewsItem] = Field(
+        default_factory=list,
+        description="Recent news items retrieved via web search."
+    )
+
+
 class QuizGenerateRequest(BaseModel):
     """Request payload for quiz generation endpoint."""
 
@@ -85,3 +104,7 @@ class QuizGenerateResponse(BaseModel):
     topic: Optional[str] = Field(default=None, description="The custom topic if specified.")
     questions: List[QuestionItem] = Field(..., description="List of 4 verified multiple-choice questions.")
     validation_score: float = Field(..., description="Quality verification score (0.0 to 1.0).")
+    research_context: Optional[ResearchContext] = Field(
+        default=None,
+        description="Safe retrieved RAG facts and latest news context."
+    )

@@ -47,6 +47,8 @@ class QuizGraphNodes:
         combined_context = historical_facts + news_text_list
         return {
             "context": combined_context,
+            "historical_facts": historical_facts,
+            "latest_news": news_items,
             "status": "researching"
         }
 
