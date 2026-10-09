@@ -6,15 +6,15 @@ import httpx
 class APIClient:
     """HTTP Client communicating exclusively with the FastAPI REST backend."""
 
-    def __init__(self, base_url: Optional[str] = None, timeout: float = 90.0):
+    def __init__(self, base_url: Optional[str] = None, timeout: float = 120.0):
         raw_url = base_url or os.getenv("API_BASE_URL") or "http://127.0.0.1:8000"
         self.base_url = raw_url.rstrip("/")
         self.timeout = timeout
 
     def check_health(self) -> Dict[str, Any]:
-        """Checks if the FastAPI backend is running and healthy."""
+        """Checks if the FastAPI backend is running and healthy (quick 10s check)."""
         try:
-            with httpx.Client(base_url=self.base_url, timeout=5.0) as client:
+            with httpx.Client(base_url=self.base_url, timeout=10.0) as client:
                 res = client.get("/health")
                 if res.status_code == 200:
                     return {"connected": True, "data": res.json()}
@@ -55,7 +55,10 @@ class APIClient:
                 "error": "Could not connect to FastAPI backend at " + self.base_url + ". Ensure 'uvicorn app.main:app' is running."
             }
         except httpx.TimeoutException:
-            return {"success": False, "error": "Request timed out while waiting for multi-agent graph."}
+            return {
+                "success": False,
+                "error": f"Request timed out after {int(self.timeout)}s while waiting for multi-agent graph. The backend might be cold-starting or performing deep fact verification. Please try again."
+            }
         except Exception as e:
             return {"success": False, "error": f"Unexpected error: {str(e)}"}
 
@@ -64,7 +67,7 @@ class APIClient:
         Calls GET /api/v1/quizzes/{quiz_id} to retrieve a persisted quiz from SQLite.
         """
         try:
-            with httpx.Client(base_url=self.base_url, timeout=10.0) as client:
+            with httpx.Client(base_url=self.base_url, timeout=30.0) as client:
                 res = client.get(f"/api/v1/quizzes/{quiz_id}")
                 if res.status_code == 200:
                     return {"success": True, "data": res.json()}
@@ -89,7 +92,7 @@ class APIClient:
         }
 
         try:
-            with httpx.Client(base_url=self.base_url, timeout=10.0) as client:
+            with httpx.Client(base_url=self.base_url, timeout=30.0) as client:
                 res = client.post("/api/v1/attempts/submit", json=payload)
                 if res.status_code == 200:
                     return {"success": True, "data": res.json()}
