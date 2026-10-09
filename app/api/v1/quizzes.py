@@ -55,7 +55,7 @@ def generate_quiz_endpoint(
     if final_state.get("status") == "failed":
         error_msg = final_state.get("error") or "Unable to generate a sufficiently validated quiz after 3 attempts."
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=getattr(status, "HTTP_422_UNPROCESSABLE_CONTENT", 422),
             detail=error_msg
         )
 

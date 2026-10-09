@@ -1,5 +1,8 @@
 from typing import List, Dict
-from ddgs import DDGS
+try:
+    from ddgs import DDGS
+except ImportError:
+    from duckduckgo_search import DDGS
 
 
 class SearchService:
